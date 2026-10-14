@@ -1,3 +1,7 @@
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
+https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_Baseline.ipynb
+)
+
 # Acoustic Domain Generalization for Electrical Motor Fault Diagnosis
 
 PyTorch implementation of an **acoustic-only 1D CNN baseline** for electrical motor fault diagnosis under **unseen operating speeds**.

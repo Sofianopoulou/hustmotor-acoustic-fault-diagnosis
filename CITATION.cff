@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the reference paper and acknowledge this implementation."
+title: "Acoustic Domain Generalization for Electrical Motor Fault Diagnosis"
+type: software
+authors:
+  - family-names: "Sofianopoulou"
+    given-names: "Apostolia Maria"
+version: 1.0.0
+date-released: 2026-10-14
+keywords:
+  - acoustic fault diagnosis
+  - domain generalization
+  - 1D CNN
+  - HUSTmotor
+  - PyTorch
+references:
+  - type: article
+    title: "Multimodal unified generalization and translation network for intelligent fault diagnosis under dynamic environments"
+    authors:
+      - family-names: "Zhao"
+        given-names: "Chao"
+      - family-names: "Shen"
+        given-names: "Weiming"
+      - family-names: "Zio"
+        given-names: "Enrico"
+      - family-names: "Ma"
+        given-names: "Hui"
+    journal: "Engineering Applications of Artificial Intelligence"
+    volume: "162"
+    year: 2025
+    doi: "10.1016/j.engappai.2025.112559"

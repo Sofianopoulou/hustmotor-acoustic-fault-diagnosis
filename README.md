@@ -1,41 +1,47 @@
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
-https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_Baseline.ipynb
-)
+**Open in Google Colab**
+
+- **Z-score baseline:** [![Open baseline in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_Baseline.ipynb)
+- **RMS experiment:** [![Open RMS experiment in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_RMS.ipynb)
 
 # Acoustic Domain Generalization for Electrical Motor Fault Diagnosis
 
-PyTorch implementation of an **acoustic-only 1D CNN baseline** for electrical motor fault diagnosis under **unseen operating speeds**.
+PyTorch implementation and preprocessing comparison of an **acoustic-only 1D CNN** for electrical motor fault diagnosis under **unseen operating speeds**.
 
-This repository contains my acoustic-modality contribution to a multimodal deep-learning workshop project at the **Polytechnic University of Tirana (UPT)**. The broader project investigates motor fault diagnosis from synchronized vibration and acoustic signals using the HUSTmotor dataset.
+This repository contains my acoustic-modality contribution to a multimodal deep-learning workshop project at the **Université de technologie de Compiègne (UTC)**. The broader project investigates motor fault diagnosis using synchronized vibration and acoustic signals from the HUSTmotor dataset.
 
-The acoustic baseline follows the feature-extractor architecture and motor-domain generalization protocol described by Zhao et al. (2025). It is evaluated using leave-one-speed-out Tasks 9–12 across motor speeds of **5, 10, 20, and 30 Hz**.
+The acoustic CNN follows a paper-inspired architecture and the leave-one-speed-out motor-domain generalization protocol described by Zhao et al. (2025), across **5, 10, 20 and 30 Hz**. Two acoustic input normalization strategies have been evaluated: **per-window z-score** and **source-trained RMS**.
 
 > Although the broader workshop project uses the term *anomaly detection*, this baseline is a supervised **six-class fault-classification** experiment.
 
-## Main result
+## Results: z-score vs RMS normalization
 
-Across **10 independent trials** and Tasks 9–12:
+Each result is the **mean unseen-target accuracy over 10 independent seeds** for the corresponding leave-one-speed-out task.
 
-**Our acoustic CNN: 48.45 ± 2.14% average unseen-domain accuracy**
+| Task | Source speeds | Unseen speed | Z-score (mean ± SD) | RMS (mean ± SD) | Paper M2 |
+|---|---|---|---:|---:|---:|
+| 9 | 10, 20, 30 Hz | 5 Hz | 26.36 ± 3.00% | 24.68 ± 6.61% | 49.23% |
+| 10 | 5, 20, 30 Hz | 10 Hz | 60.96 ± 4.02% | 44.88 ± 2.29% | 61.89% |
+| 11 | 5, 10, 30 Hz | 20 Hz | 57.29 ± 4.88% | 41.14 ± 4.32% | 59.14% |
+| 12 | 5, 10, 20 Hz | 30 Hz | 49.19 ± 2.80% | 42.04 ± 7.56% | 28.13% |
+| **Overall** | — | — | **48.45 ± 2.14%** | **38.19 ± 2.34%** | **49.60%** |
 
-**Reference paper M2 acoustic baseline: 49.60%**
+*Overall SD is computed across the 10 seed-wise averages of the four target tasks; it is not the pooled SD of all 40 accuracies. Percentage figures are rounded.*
 
-The similar overall averages hide substantial task-dependent differences:
+**Observation:** RMS normalization yielded **10.26 percentage points lower overall mean target accuracy** than the z-score baseline. Performance decreased on all four tasks, with the largest changes on Tasks 10 and 11. A possible explanation is that preserving relative acoustic amplitude makes the classifier more sensitive to motor-speed-dependent variation, but this mechanism has not yet been established experimentally.
 
-| Task | Source speeds | Unseen target | Ours (10 runs) | Paper M2 |
-|---|---|---:|---:|---:|
-| 9 | 10, 20, 30 Hz | 5 Hz | **26.36 ± 3.00%** | 49.23% |
-| 10 | 5, 20, 30 Hz | 10 Hz | **60.96 ± 4.02%** | 61.89% |
-| 11 | 5, 10, 30 Hz | 20 Hz | **57.29 ± 4.88%** | 59.14% |
-| 12 | 5, 10, 20 Hz | 30 Hz | **49.19 ± 2.80%** | 28.13% |
+**Comparison caveat:** The original z-score notebook uses the v1.0 processed dataset, while the RMS notebook uses v1.3. The shared preprocessing documentation states that these contain the same signals and partitions, but an independent array-level equivalence check of the two versioned files and a full configuration comparison are still needed before treating normalization as the *sole* cause of the accuracy difference.
 
-Task 9 shows a severe shift at unseen 5 Hz, while Task 12 substantially exceeds the reference M2 result. This task-level behavior is more informative than the global average alone.
+**Reference paper:** The published M2 results use a different splitting approach, so they provide context rather than a strictly controlled benchmark.
 
-![Paper comparison](figures/acoustic_paper_vs_ours_10runs.png)
+### Z-score baseline figures
 
-## Class-wise analysis
+![Z-score baseline compared with reference paper](figures/acoustic_paper_vs_ours_10runs.png)
 
-The final evaluation reloaded all **40 trained checkpoints** (4 tasks × 10 seeds) and computed class-wise precision, recall, F1-score, and row-normalized confusion matrices.
+The existing plots in `figures/` and analysis in `docs/results.md` relate to the **original z-score baseline**, not the new RMS experiment. RMS training outputs, checkpoint files, plots and additional evaluation artifacts are stored in the associated Google Drive experiment directory and displayed in the RMS notebook.
+
+## Class-wise analysis (original z-score baseline)
+
+The original z-score evaluation reloaded all **40 trained checkpoints** (4 tasks × 10 seeds) and computed class-wise precision, recall, F1-score, and row-normalized confusion matrices.
 
 ![Aggregate confusion matrices](figures/acoustic_confusion_matrices_10runs.png)
 
@@ -57,7 +63,8 @@ See [`docs/results.md`](docs/results.md) for a concise technical discussion.
 ├── requirements.txt
 ├── pyproject.toml
 ├── notebooks/
-│   └── HUSTmotor_Acoustic_Baseline.ipynb
+│   ├── HUSTmotor_Acoustic_Baseline.ipynb
+│   └── HUSTmotor_Acoustic_RMS.ipynb
 ├── src/
 │   └── acoustic_baseline/
 │       ├── __init__.py
@@ -97,15 +104,23 @@ The preprocessing pipeline used by this repository was prepared by **Gentian Qin
 
 - [ISCF Project — HUSTmotor preprocessing](https://github.com/Genti24-bit/ISCF_Project/)
 
-The released `hustmotor_1024.npz` contains **24,000 paired 1024-point windows**:
+The processed dataset contains **24,000 paired 1024-point windows**. The z-score baseline uses `hustmotor_1024.npz` (v1.0); the RMS notebook uses `hustmotor_1024_v1.3.npz` (v1.3):
 - 6 health states
 - 4 operating speeds
 - 1,000 windows per class-speed pair
 - synchronized vibration/acoustic indexing
-- per-window z-score normalization
+- stored per-window z-score-normalized waveforms
 - block-based split metadata
+- v1.3: per-window RMS values, DC offsets, start indices, and 11 time-domain features for both acoustic and vibration signals
 
-The dataset file is intentionally **not committed to this repository**. The Colab notebook downloads the release and verifies its SHA-256 fingerprint before training.
+Dataset archives and model checkpoints are intentionally **not committed to this repository**. Each Colab notebook downloads or accesses its specified dataset and verifies the relevant SHA-256 fingerprint.
+
+### Normalization methods
+
+- **Z-score:** Each window is centered and divided by its own standard deviation. This removes relative amplitude differences across windows.
+- **RMS:** Using the v1.3 metadata, the shared loader reconstructs DC-removed windows and divides each by a **single channel-specific RMS scale derived only from source-training windows for that task**. This retains between-window amplitude differences without using target-domain data to set the scale.
+
+Both notebooks use the same six-class classification objective and leave-one-speed-out evaluation design. The RMS notebook explicitly passes `norm="rms"` during training and final checkpoint evaluation.
 
 ### Important methodological difference
 
@@ -165,14 +180,13 @@ Model selection is performed using **source-domain validation data only**. The u
 
 ### Google Colab
 
-The easiest reproduction path is:
+1. Choose the [z-score baseline notebook](notebooks/HUSTmotor_Acoustic_Baseline.ipynb) or the [RMS notebook](notebooks/HUSTmotor_Acoustic_RMS.ipynb).
+2. Open it in Colab, enable a GPU runtime, and mount Google Drive when prompted.
+3. Run the setup and data-loading cells, then the single-run experiment if you want to reproduce training.
+4. Only set `RUN_10_TRIALS = True` if you intend to train all **40 models** (four tasks × ten seeds). The completed RMS notebook defaults to `False` to avoid accidentally overwriting checkpoints.
+5. For aggregate evaluation without retraining, ensure the saved checkpoints exist in the Drive location specified in the notebook, then run the checkpoint evaluation cells.
 
-1. Open [`notebooks/HUSTmotor_Acoustic_Baseline.ipynb`](notebooks/HUSTmotor_Acoustic_Baseline.ipynb) in Google Colab.
-2. Enable GPU acceleration.
-3. Run the notebook from top to bottom.
-4. Set `RUN_10_TRIALS = True` only after the single-run Tasks 9–12 experiment works correctly.
-
-The notebook automatically:
+The notebooks provide code that:
 - mounts Google Drive;
 - creates project folders;
 - clones the preprocessing repository;
@@ -184,8 +198,8 @@ The notebook automatically:
 ### Local Python
 
 ```bash
-git clone <your-repository-url>
-cd hustmotor-acoustic-domain-generalization
+git clone https://github.com/Sofianopoulou/hustmotor-acoustic-fault-diagnosis.git
+cd hustmotor-acoustic-fault-diagnosis
 
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
@@ -194,7 +208,7 @@ pip install -r requirements.txt
 pytest
 ```
 
-The modular source code in `src/acoustic_baseline/` mirrors the core model/training logic from the notebook.
+The modular source code in `src/acoustic_baseline/` mirrors the core model/training logic from the original baseline. The RMS experiment and its normalization-specific checkpoint evaluation are documented in the dedicated notebook.
 
 ## Exploratory acoustic analysis
 
@@ -209,6 +223,8 @@ Before modeling, acoustic FFT comparisons were used to examine:
 These observations motivated the domain-generalization setting: acoustic signals contain fault-discriminative information, but their spectral structure is also strongly affected by operating speed.
 
 ## Report
+
+The existing report documents the **original z-score baseline**. It predates the RMS comparison and should not be interpreted as reporting RMS results.
 
 A two-column academic report documenting the implementation, experimental design, results, limitations, and relation to the multimodal stage is included in [`report/`](report/).
 

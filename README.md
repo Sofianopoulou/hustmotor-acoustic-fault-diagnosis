@@ -1,3 +1,21 @@
+## Experiment notebooks
+
+The notebooks below contain the acoustic experiments for the UTC HUSTmotor project. They are separate experimental workflows and should not be interpreted as all having identical training budgets.
+
+| Experiment | GitHub notebook | Colab |
+|---|---|---|
+| Original acoustic CNN (Z-score; 48.45% mean target accuracy) | [Notebook](notebooks/HUSTmotor_Acoustic_Baseline.ipynb) | [Open](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_Baseline.ipynb) |
+| CNN with RMS normalization (38.19%) | [Notebook](notebooks/HUSTmotor_Acoustic_RMS.ipynb) | [Open](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_RMS.ipynb) |
+| Acoustic engineered-feature Random Forest analysis | [Notebook](notebooks/HUSTmotor_Acoustic_Feature_Analysis.ipynb) | [Open](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_Feature_Analysis.ipynb) |
+| Source-speed-only feature-group selection (macro-F1) | [Notebook](notebooks/HUSTmotor_Acoustic_Source_Domain_Validation.ipynb) | [Open](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_Source_Domain_Validation.ipynb) |
+| CNN + 6 shape features (48.97%) | [Notebook](notebooks/HUSTmotor_Acoustic_CNN_Shape_Fusion.ipynb) | [Open](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_CNN_Shape_Fusion.ipynb) |
+| Acoustic 1D ResNet (42.17%) | [Notebook](notebooks/HUSTmotor_Acoustic_ResNet1D_UTC.ipynb) | [Open](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_ResNet1D_UTC.ipynb) |
+| Preprocessing and source-speed validation audit | [Notebook](notebooks/HUSTmotor_Acoustic_Preprocessing_Validation_Audit_UTC.ipynb) | [Open](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_Preprocessing_Validation_Audit_UTC.ipynb) |
+
+**Notes:** Results are exploratory comparisons on unseen motor speeds. The feature analysis and cross-speed audit use different training/evaluation designs from the 10-seed CNN benchmarks. The ResNet + supervised contrastive-learning experiment is not listed here because its notebook/results have not yet been verified for publication.
+
+---
+
 **Open in Google Colab**
 
 - **Z-score baseline:** [![Open baseline in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_Baseline.ipynb)

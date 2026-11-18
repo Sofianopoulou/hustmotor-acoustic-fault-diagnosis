@@ -1,5 +1,7 @@
 ## Experiment notebooks
 
+- [**Acoustic TCN — 40-run unseen-speed benchmark**](notebooks/HUSTmotor_Acoustic_TCN_UTC.ipynb) — noncausal dilated residual TCN (Z-score); 4 tasks × 10 seeds, **52.02%** mean unseen-speed accuracy (vs **48.45%** original acoustic CNN). [Open in Colab](https://colab.research.google.com/github/Sofianopoulou/hustmotor-acoustic-fault-diagnosis/blob/main/notebooks/HUSTmotor_Acoustic_TCN_UTC.ipynb).
+
 The notebooks below contain the acoustic experiments for the UTC HUSTmotor project. They are separate experimental workflows and should not be interpreted as all having identical training budgets.
 
 | Experiment | GitHub notebook | Colab |
